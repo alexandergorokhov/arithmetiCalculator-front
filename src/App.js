@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Routes, Route, Link, NavLink } from 'react-router-dom';
+import LoginPage from './login/login';
+import CalculatorPage from './calculator/calculator';
+import RecordsPage from './records/records';
 
-function App() {
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    sessionStorage.clear();
+    console.log("Logging out");
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
+          <Route
+            path="/calculator"
+            element={<CalculatorPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+          />
+          <Route
+            path="/records"
+            element={<RecordsPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
 
 export default App;
